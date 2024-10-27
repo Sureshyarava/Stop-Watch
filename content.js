@@ -1,44 +1,54 @@
+// content.js
 (function() {
   if (window.hasRun) {
-    console.log("Content script has already run");
+    console.log('Content script has already run');
     return;
   }
   window.hasRun = true;
 
-  console.log("Content script loaded");
+  console.log('Content script loaded');
 
-  let circularWindow = null;
+  let stopwatchWindow = null;
+  let seconds = 0;
+  let isRunning = false;
+  let intervalId;
   let isDragging = false;
-  let offsetX;
-  let offsetY;
+  let offsetX, offsetY;
 
-  function createCircularWindow() {
-    console.log("Creating circular window");
-    if (circularWindow) {
-      console.log("Circular window already exists");
+  function createStopwatchWindow() {
+    if (stopwatchWindow) {
+      console.log('Stopwatch window already exists');
       return;
     }
 
-    circularWindow = document.createElement('div');
-    circularWindow.id = 'suresh-stop-watch-window';
-    circularWindow.className = 'circular-window';
-    circularWindow.innerHTML = '<span>Suresh</span>';
-    document.body.appendChild(circularWindow);
-    console.log("Circular window appended to body", circularWindow);
+    stopwatchWindow = document.createElement('div');
+    stopwatchWindow.id = 'stopwatch-window';
+    stopwatchWindow.className = 'stopwatch-rectangle';
+    stopwatchWindow.innerHTML = `
+      <div id="drag-handle">&#9776;</div>
+      <p id="stopwatch-time">00:00:00</p>
+      <div class="button-container">
+        <button id="start-stop-button">Start</button>
+        <button id="reset-button" disabled>Reset</button>
+      </div>
+    `;
+    document.body.appendChild(stopwatchWindow);
 
-    circularWindow.addEventListener('mousedown', dragStart);
+    document.getElementById('start-stop-button').addEventListener('click', toggleStartStop);
+    document.getElementById('reset-button').addEventListener('click', resetStopwatch);
+
+    // Add drag functionality
+    const dragHandle = document.getElementById('drag-handle');
+    dragHandle.addEventListener('mousedown', dragStart);
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', dragEnd);
   }
 
   function dragStart(e) {
-    console.log('Drag start', e.clientX, e.clientY);
-    const rect = circularWindow.getBoundingClientRect();
+    isDragging = true;
+    const rect = stopwatchWindow.getBoundingClientRect();
     offsetX = e.clientX - rect.left;
     offsetY = e.clientY - rect.top;
-    if (e.target === circularWindow) {
-      isDragging = true;
-    }
   }
 
   function drag(e) {
@@ -51,38 +61,60 @@
       const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
       const scrollY = window.pageYOffset || document.documentElement.scrollTop;
       
-      circularWindow.style.left = `${x + scrollX}px`;
-      circularWindow.style.top = `${y + scrollY}px`;
+      stopwatchWindow.style.left = `${x + scrollX}px`;
+      stopwatchWindow.style.top = `${y + scrollY}px`;
     }
   }
 
-  function dragEnd(e) {
-    console.log('Drag end');
+  function dragEnd() {
     isDragging = false;
   }
 
-  function toggleCircularWindow() {
-    console.log("Toggling circular window");
-    if (circularWindow) {
-      console.log("Removing existing circular window");
-      circularWindow.remove();
-      circularWindow = null;
+  function toggleStartStop() {
+    const startStopButton = document.getElementById('start-stop-button');
+    const resetButton = document.getElementById('reset-button');
+    if (isRunning) {
+      clearInterval(intervalId);
+      startStopButton.textContent = 'Start';
+      resetButton.disabled = false;
+      isRunning = false;
     } else {
-      console.log("Creating new circular window");
-      createCircularWindow();
+      intervalId = setInterval(updateTime, 1000);
+      startStopButton.textContent = 'Stop';
+      resetButton.disabled = true;
+      isRunning = true;
     }
-    console.log("Circular window state:", circularWindow ? "visible" : "hidden");
+  }
+
+  function resetStopwatch() {
+    if (!isRunning) {
+      seconds = 0;
+      updateTime();
+    }
+  }
+
+  function updateTime() {
+    document.getElementById('stopwatch-time').textContent = formatTime(seconds);
+    seconds++;
+  }
+
+  function formatTime(totalSeconds) {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   }
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("Message received in content script:", request);
-    if (request.action === "toggle") {
-      toggleCircularWindow();
-      console.log("Toggle action performed");
-      sendResponse({status: "Toggle action performed"});
+    if (request.action === 'toggle') {
+      if (!stopwatchWindow) {
+        createStopwatchWindow();
+      } else {
+        stopwatchWindow.remove();
+        stopwatchWindow = null;
+      }
     }
-    return true;
   });
 
-  console.log("Content script setup complete");
-})(); 
+  console.log('Stopwatch script setup complete');
+})();
