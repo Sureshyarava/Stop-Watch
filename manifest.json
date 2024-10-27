@@ -1,9 +1,22 @@
 {
-    "manifest_version" : 3,
-    "name" : "Stop Watch",
-    "version" : "1.0",
-    "description" : "Stop watch to track the time.",
-    "action" : {
-        "default_popup" : "index.html"
-    }
-}
+    "manifest_version": 3,
+    "name": "Stop Watch",
+    "version": "1.0",
+    "description": "A simple stopwatch extension",
+    "permissions": ["activeTab", "scripting"],
+    "host_permissions": ["http://*/*", "https://*/*"],
+    "action": {
+      "default_icon": "Stop Watch.png"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["content.js"],
+        "css": ["style.css"],
+        "run_at": "document_end"
+      }
+    ]
+  }
