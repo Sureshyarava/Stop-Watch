@@ -3,7 +3,7 @@
     "name": "Stop Watch",
     "version": "1.0",
     "description": "A simple stopwatch extension",
-    "permissions": ["activeTab", "scripting"],
+    "permissions": ["activeTab", "scripting", "storage"],
     "host_permissions": ["http://*/*", "https://*/*"],
     "action": {
       "default_icon": "Stop Watch.png"
