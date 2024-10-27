@@ -8,9 +8,6 @@
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 9999;
-}
-
-.stopwatch-rectangle {
   width: 180px;
   height: auto;
   display: flex;
@@ -19,7 +16,7 @@
   justify-content: center;
 }
 
-#drag-handle {
+#stopwatch-window #drag-handle {
   cursor: move;
   padding: 5px;
   margin-bottom: 5px;
@@ -28,19 +25,21 @@
   color: #4CAF50;
 }
 
-#stopwatch-time {
+#stopwatch-window #stopwatch-time {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
 }
 
-.button-container {
+#stopwatch-window .button-container {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-button {
+#stopwatch-window button {
   flex: 1;
   margin: 0 5px;
   padding: 5px 10px;
@@ -53,11 +52,11 @@ button {
   transition: background-color 0.3s, opacity 0.3s;
 }
 
-button:hover {
+#stopwatch-window button:hover {
   background-color: #45a049;
 }
 
-button:disabled {
+#stopwatch-window button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
