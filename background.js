@@ -1,7 +1,7 @@
 chrome.action.onClicked.addListener((tab) => {
     console.log("Extension icon clicked for tab:", tab.id);
   
-    if (tab.url.startsWith("chrome://") || tab.url.startsWith("chrome-extension://")) {
+    if (tab.url.startsWith("chrome://") || tab.url.startsWith("chrome-extension://") || tab.url.startsWith("https://www.google.com/search*")) {
       console.log("Cannot inject scripts into chrome:// or chrome-extension:// pages");
       return;
     }

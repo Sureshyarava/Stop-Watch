@@ -1,0 +1,36 @@
+Privacy Policy for Stop Watch Chrome Extension
+
+Last updated: [10/28/2024]
+
+1. Introduction
+This privacy policy explains how our Stop Watch Chrome Extension ("the Extension") collects, uses, and protects user data.
+
+2. Data Collection
+Our Extension collects and stores the following data locally on your device:
+- Stopwatch state (time elapsed, running status)
+- Stopwatch position on the screen
+- Stopwatch visibility state
+- Tab-specific identifiers (using page URLs)
+
+This data is stored using Chrome's local storage API and is not transmitted to any external servers.
+
+3. Use of Data
+The collected data is used solely for the purpose of providing and maintaining the stopwatch functionality across page reloads and browser restarts. This allows us to preserve your stopwatch state and settings for a seamless user experience.
+
+4. Data Access and Permissions
+Due to the nature of our Extension's functionality, it has access to all web pages you visit. However, we do not collect, store, or process any personal information, website content, or browsing history beyond what is necessary for the stopwatch functionality.
+
+5. Data Sharing and Transfer
+We do not share, sell, or transfer any user data to third parties. All data remains locally on your device.
+
+6. Data Security
+As all data is stored locally on your device, its security is managed by your browser's built-in security measures. We do not have access to this data and cannot protect it beyond the Extension's code.
+
+7. User Rights
+You can clear all data stored by the Extension by uninstalling it or clearing your browser data. You can also control the Extension's access to websites through Chrome's extension management settings.
+
+8. Changes to This Policy
+We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy on the Chrome Web Store.
+
+9. Contact Us
+If you have any questions about this privacy policy, please contact us at sureshyarava340@gmail.com.
